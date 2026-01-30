@@ -2,10 +2,11 @@
 import { GoogleGenAI } from "@google/genai";
 import { DOCUMENT_CONTENT } from "./constants";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export async function askAssistant(question: string, history: {role: 'user' | 'model', text: string}[]) {
   try {
+    // Inicializa a instância dentro da função para garantir que process.env esteja disponível
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
@@ -27,8 +28,14 @@ export async function askAssistant(question: string, history: {role: 'user' | 'm
     });
 
     return response.text || "Desculpe, não consegui processar sua pergunta agora.";
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini API Error:", error);
+    
+    // Tratamento de erro específico conforme regras
+    if (error?.message?.includes("Requested entity was not found")) {
+      return "Erro: Chave de API inválida ou projeto não encontrado. Verifique as variáveis de ambiente na Vercel.";
+    }
+    
     return "Ocorreu um erro ao consultar o assistente. Por favor, tente novamente mais tarde.";
   }
 }
