@@ -6,9 +6,6 @@ import { Clock, Info, CheckCircle2, Coffee, Utensils, Moon, Sun, Calendar, Alert
 const DietPlan: React.FC = () => {
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
   
-  // Mapeia o dia da semana do JS (0-Dom a 6-Sab) para o índice do nosso array
-  // JS: 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sab
-  // Nosso: 0=Seg, 1=Ter, 2=Qua, 3=Qui, 4=Sex, 5=Sab, 6=Dom
   const getCurrentDayIndex = () => {
     const jsDay = new Date().getDay();
     return jsDay === 0 ? 6 : jsDay - 1;
@@ -16,7 +13,6 @@ const DietPlan: React.FC = () => {
 
   const [selectedDay, setSelectedDay] = useState(days[getCurrentDayIndex()]);
 
-  // Garante que ao montar o componente, o dia atual seja selecionado
   useEffect(() => {
     setSelectedDay(days[getCurrentDayIndex()]);
   }, []);
@@ -40,34 +36,30 @@ const DietPlan: React.FC = () => {
         </p>
         
         <div className="mt-4 flex flex-wrap gap-2">
-          <span className="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-1 rounded-full border border-blue-100 flex items-center gap-1">
-            <CheckCircle2 size={12} /> HOJE É {selectedDay.toUpperCase()}
-          </span>
           <span className="bg-green-50 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full border border-green-100 flex items-center gap-1">
-            <CheckCircle2 size={12} /> DIRETRIZES ATIVAS
+            <CheckCircle2 size={12} /> DIRETRIZES MÉDICAS ATIVAS
+          </span>
+          <span className="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-1 rounded-full border border-blue-100 flex items-center gap-1">
+            <Info size={12} /> DIETA EQUILIBRADA
           </span>
         </div>
       </div>
 
-      {/* Day Selector - Melhorado para Mobile */}
+      {/* Day Selector - Mobile Optimized */}
       <div className="sticky top-[72px] z-30 bg-slate-50/80 backdrop-blur-md py-2 -mx-4 px-4 overflow-x-auto scrollbar-hide flex gap-2">
-        {days.map((day) => {
-          const isToday = days[getCurrentDayIndex()] === day;
-          return (
-            <button
-              key={day}
-              onClick={() => setSelectedDay(day)}
-              className={`px-5 py-3 rounded-2xl text-sm font-bold whitespace-nowrap transition-all duration-300 min-w-[100px] flex flex-col items-center gap-0.5 ${
-                selectedDay === day 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 scale-105' 
-                  : 'bg-white text-slate-500 border border-slate-100 active:bg-slate-100'
-              }`}
-            >
-              <span>{day}</span>
-              {isToday && <span className={`text-[8px] uppercase ${selectedDay === day ? 'text-blue-100' : 'text-blue-500'}`}>Hoje</span>}
-            </button>
-          );
-        })}
+        {days.map((day) => (
+          <button
+            key={day}
+            onClick={() => setSelectedDay(day)}
+            className={`px-6 py-4 rounded-2xl text-sm font-bold whitespace-nowrap transition-all duration-300 min-w-[110px] flex items-center justify-center ${
+              selectedDay === day 
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 scale-105' 
+                : 'bg-white text-slate-500 border border-slate-100 active:bg-slate-100'
+            }`}
+          >
+            {day}
+          </button>
+        ))}
       </div>
 
       {/* Daily Content */}
@@ -121,7 +113,7 @@ const DietPlan: React.FC = () => {
           Dica de Preparo
         </h3>
         <p className="text-[14px] text-amber-800 leading-relaxed">
-          Evite temperos industrializados mesmo no fim de semana. O sódio "escondido" em caldos prontos é um grande gatilho para cálculos.
+          Evite temperos industrializados. O sódio "escondido" em caldos prontos é um grande gatilho para cálculos renais.
         </p>
       </div>
     </div>
