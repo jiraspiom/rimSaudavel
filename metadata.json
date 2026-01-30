@@ -1,0 +1,8 @@
+{
+  "name": "RimSaudável - Guia de Prevenção de Cálculos Renais",
+  "description": "Um aplicativo completo para auxiliar na prevenção de cálculos renais baseado em diretrizes médicas. Inclui rastreador de água, guia alimentar detalhado e assistente de IA.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
